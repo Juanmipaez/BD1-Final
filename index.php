@@ -14,7 +14,7 @@
 <body>
 <div class="container mt-5">
 
-    <h1 class='fw-bold'>Trabajo Final BD1 - (Título de su trabajo)</h1>
+    <h1 class='fw-bold'>Trabajo Final BD1 - Plataformas de pedido de comida en línea</h1>
 
     <div class="informacion">
         <ul>
@@ -28,24 +28,24 @@
     <div class="integrantes">
         <h2 class='fw-bold'>Integrantes</h2>
         <ul>
-            <li>Integrante 1</li>
-            <li>Integrante 2</li>
-            <li>Integrante 3</li>
+            <li>Juan Camilo Marín Valencia - C.C 1025881905</li>
+            <li>Rusbel Danilo Jaramillo Hincapié - C.C 1037886240</li>
+            <li>Juan Miguel Paez Tatis - C.C 1048457583</li>
         </ul>
     </div>
 
     <div class="modelo">
         <h2 class='fw-bold'>Modelo E-R (Poner su modelo análogo)</h2>
         <p></p>
-        <img src="modelo.png">
+        <img src="modelo1.png">
     </div>
 
     <div class="enlaces">
         <h2 class='fw-bold'>Enlaces</h2>
         <ul>
-            <li class="mb-3"><a class="btn btn-success" role="button" href="cliente/cliente.php">Entidad análoga a CLIENTE (NOMBRE)</a></li>
-            <li class="mb-3"><a class="btn btn-success" role="button" href="empresa/empresa.php">Entidad análoga a EMPRESA (NOMBRE)</a></li>
-            <li class="mb-3"><a class="btn btn-success" role="button" href="proyecto/proyecto.php">Entidad análoga a PROYECTO (NOMBRE)</a></li>
+            <li class="mb-3"><a class="btn btn-success" role="button" href="cliente/cliente.php">Entidad análoga a EMPLEADO (NOMBRE)</a></li>
+            <li class="mb-3"><a class="btn btn-success" role="button" href="empresa/empresa.php">Entidad análoga a ANIMAL (NOMBRE)</a></li>
+            <li class="mb-3"><a class="btn btn-success" role="button" href="proyecto/proyecto.php">Entidad análoga a INSEMINACIÓN ARTIFICIAL (NOMBRE)</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta1.php">Consulta 1</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta2.php">Consulta 2</a></li>
             <li class="mb-3"><a class="btn btn-info" role="button" href="busqueda/busqueda1.php">Búsqueda 1</a></li>
