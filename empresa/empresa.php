@@ -3,7 +3,7 @@ include "../includes/header.php";
 ?>
 
 <!-- TÍTULO. Cambiarlo, pero dejar especificada la analogía -->
-<h1 class="mt-3 fw-bold">Entidad análoga a EMPRESA (NOMBRE)</h1>
+<h1 class="mt-3 fw-bold">Entidad análoga a EMPRESA (Método de pago)</h1>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
 <div class="formulario p-4 m-3 border rounded-3">
@@ -11,18 +11,32 @@ include "../includes/header.php";
     <form action="empresa_insert.php" method="post" class="form-group">
 
         <div class="mb-3">
-            <label for="nit" class="form-label">NIT</label>
-            <input type="number" class="form-control" id="nit" name="nit" required>
+            <label for="tipo_metodo" class="form-label">Tipo de Método de Pago</label>
+            <select name="tipo_metodo" id="tipo_metodo" class="form-select" required>
+                <option value="" selected disabled hidden>Seleccionar...</option>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="cuenta_banco">Cuenta Bancaria</option>
+            </select>
         </div>
 
         <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
+            <label for="id_metodo" class="form-label">Número</label>
+            <input type="number" class="form-control" id="id_metodo" name="id_metodo" required>
         </div>
 
         <div class="mb-3">
-            <label for="presupuesto" class="form-label">Presupuesto</label>
-            <input type="number" class="form-control" id="presupuesto" name="presupuesto" required>
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="number" class="form-control" id="cvv" name="cvv" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha_venc" class="form-label">Fecha vencimiento</label>
+            <input type="date" class="form-control" id="fecha_venc" name="fecha_venc" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado_metodo" class="form-label">Metodo de pago activo</label>
+            <input type="checkbox" id="estado_metodo" name="estado_metodo" checked>
         </div>
         
         <!-- Consultar la lista de clientes y desplegarlos -->

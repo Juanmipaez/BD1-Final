@@ -3,7 +3,7 @@ include "../includes/header.php";
 ?>
 
 <!-- TÍTULO. Cambiarlo, pero dejar especificada la analogía -->
-<h1 class="mt-3 fw-bold">Entidad análoga a PROYECTO (NOMBRE)</h1>
+<h1 class="mt-3 fw-bold">Entidad análoga a PROYECTO (Actualización)</h1>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
 <div class="formulario p-4 m-3 border rounded-3">
@@ -11,17 +11,17 @@ include "../includes/header.php";
     <form action="proyecto_insert.php" method="post" class="form-group">
 
         <div class="mb-3">
-            <label for="codigo" class="form-label">Código</label>
-            <input type="number" class="form-control" id="codigo" name="codigo" required>
+            <label for="fecha_cambio" class="form-label">Fecha de cambio</label>
+            <input type="date" class="form-control" id="fecha_cambio" name="fecha_cambio" required>
         </div>
 
         <div class="mb-3">
-            <label for="fechacreacion" class="form-label">Fecha de creación</label>
-            <input type="date" class="form-control" id="fechacreacion" name="fechacreacion" required>
+            <label for="detalles" class="form-label">Detalles</label>
+            <input type="text" class="form-control" id="detalles" name="detalles" required>
         </div>
 
         <div class="mb-3">
-            <label for="valor" class="form-label">Valor</label>
+            <label for="valor" class="form-label">Siguiente actualización</label>
             <input type="number" class="form-control" id="valor" name="valor" required>
         </div>
         
