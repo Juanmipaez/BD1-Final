@@ -44,8 +44,8 @@
         <h2 class='fw-bold'>Enlaces</h2>
         <ul>
             <li class="mb-3"><a class="btn btn-success" role="button" href="cliente/cliente.php">Entidad Cliente</a></li>
-            <li class="mb-3"><a class="btn btn-success" role="button" href="empresa/empresa.php">Entidad Método de Pago</a></li>
-            <li class="mb-3"><a class="btn btn-success" role="button" href="proyecto/proyecto.php">Entidad Actualización</a></li>
+            <li class="mb-3"><a class="btn btn-success" role="button" href="metodo_de_pago/metodo_de_pago.php">Entidad Método de Pago</a></li>
+            <li class="mb-3"><a class="btn btn-success" role="button" href="actualizacion/actualizacion.php">Entidad Actualización</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta1.php">Consulta 1</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta2.php">Consulta 2</a></li>
             <li class="mb-3"><a class="btn btn-info" role="button" href="busqueda/busqueda1.php">Búsqueda 1</a></li>

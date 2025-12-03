@@ -4,9 +4,9 @@
 require('../config/conexion.php');
 
 // Query SQL a la BD
-$query = "SELECT * FROM empresa";
+$query = "SELECT * FROM actualizacion";
 
 // Ejecutar la consulta
-$resultadoEmpresa = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$resultadoProyecto = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
 mysqli_close($conn);
