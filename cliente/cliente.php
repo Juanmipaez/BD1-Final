@@ -43,7 +43,6 @@ include "../includes/header.php";
         <div class="mb-3">
             <label for="pago_efectivo" class="form-label">Habilitado pago en efectivo</label>
             <input type="checkbox" id="pago_efectivo" name="pago_efectivo" checked>
-            <!-- <input type="checkbox" class="form-control" id="pago_efectivo" name="pago_efectivo" checked> -->
         </div>
 
         <button type="submit" class="btn btn-primary">Agregar</button>
