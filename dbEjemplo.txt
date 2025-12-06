@@ -1,5 +1,5 @@
 CREATE TABLE cliente(
-  identificacion VARCHAR(10) PRIMARY KEY,
+  identificacion BIGINT UNSIGNED PRIMARY KEY,
   primer_nombre VARCHAR(50) NOT NULL,
   segundo_nombre VARCHAR(50),
   primer_apellido VARCHAR(50) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE metodo_pago (
   fecha_vencimiento DATE,
   titular VARCHAR(100),
   activa BOOLEAN,
-  dueño INT(10) NOT NULL,
+  dueño BIGINT UNSIGNED NOT NULL,
 
   FOREIGN KEY (dueño) REFERENCES cliente(identificacion),
   CONSTRAINT chk_saldo CHECK (saldo >= 0),
@@ -51,7 +51,7 @@ CREATE TABLE actualizacion (
   fecha_cambio DATE NOT NULL,
   siguiente_actualizacion DATE NOT NULL,
   detalles VARCHAR(255) NOT NULL,
-  ejecutor VARCHAR(10) NOT NULL,
+  ejecutor BIGINT UNSIGNED NOT NULL,
 
   PRIMARY KEY (numero_cuenta_ahorros, fecha_cambio),
   FOREIGN KEY (numero_cuenta_ahorros) REFERENCES metodo_pago(numero),

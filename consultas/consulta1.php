@@ -28,7 +28,7 @@ include "../includes/header.php";
 require('../config/conexion.php');
 
 // Query SQL a la BD -> Crearla acá (No está completada, cambiarla a su contexto y a su analogía)
-$query = "SELECT cedula, nombre FROM cliente";
+$query = "SELECT identificacion, primer_nombre FROM cliente";
 
 // Ejecutar la consulta
 $resultadoC1 = mysqli_query($conn, $query) or die(mysqli_error($conn));
@@ -64,8 +64,8 @@ if($resultadoC1 and $resultadoC1->num_rows > 0):
             <!-- Fila que se generará -->
             <tr>
                 <!-- Cada una de las columnas, con su valor correspondiente -->
-                <td class="text-center"><?= $fila["cedula"]; ?></td>
-                <td class="text-center"><?= $fila["nombre"]; ?></td>
+                <td class="text-center"><?= $fila["identificacion"]; ?></td>
+                <td class="text-center"><?= $fila["primer_nombre"]; ?></td>
             </tr>
 
             <?php

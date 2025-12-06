@@ -48,6 +48,7 @@
             <li class="mb-3"><a class="btn btn-success" role="button" href="actualizacion/actualizacion.php">Entidad Actualización</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta1.php">Consulta 1</a></li>
             <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta2.php">Consulta 2</a></li>
+            <li class="mb-3"><a class="btn btn-primary" href="consultas/consulta3.php">Consulta 3</a></li>
             <li class="mb-3"><a class="btn btn-info" role="button" href="busqueda/busqueda1.php">Búsqueda 1</a></li>
             <li class="mb-3"><a class="btn btn-info" role="button" href="busqueda/busqueda2.php">Búsqueda 2</a></li>
         </ul>
