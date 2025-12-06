@@ -12,32 +12,32 @@ include "../includes/header.php";
 
         <div class="mb-3">
             <label for="identificacion" class="form-label">Identificación</label>
-            <input type="number" class="form-control" id="identificacion" name="identificacion" required>
+            <input type="text" class="form-control" id="identificacion" name="identificacion" required>
         </div>
 
         <div class="mb-3">
             <label for="primer_nombre" class="form-label">Primer nombre</label>
             <input type="text" class="form-control" id="primer_nombre" name="primer_nombre" required>
-        </div>  
+        </div>
 
         <div class="mb-3">
             <label for="segundo_nombre" class="form-label">Segundo nombre</label>
             <input type="text" class="form-control" id="segundo_nombre" name="segundo_nombre">
-        </div>  
+        </div>
 
         <div class="mb-3">
-            <label for="primer_apellido" class="form-label">Primer Apellido</label>
+            <label for="primer_apellido" class="form-label">Primer apellido</label>
             <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" required>
         </div>
 
         <div class="mb-3">
-            <label for="segundo_apellido" class="form-label"> Segundo Apellido</label>
+            <label for="segundo_apellido" class="form-label">Segundo apellido</label>
             <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido">
-        </div>  
+        </div>
 
         <div class="mb-3">
-            <label for="celular" class="form-label">Teléfono</label>
-            <input type="number" class="form-control" id="celular" name="celular" required>
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="number" class="form-control" id="telefono" name="telefono" required>
         </div>
 
         <div class="mb-3">
@@ -48,61 +48,61 @@ include "../includes/header.php";
         <button type="submit" class="btn btn-primary">Agregar</button>
 
     </form>
-    
+
 </div>
 
 <?php
-// Importar el código del otro archivo
+// Importar el código del otro archivo (hace el SELECT * FROM cliente)
 require("cliente_select.php");
 
 // Verificar si llegan datos
-if($resultadoCliente and $resultadoCliente->num_rows > 0):
+if ($resultadoCliente && $resultadoCliente->num_rows > 0):
 ?>
 
-<!-- MOSTRAR LA TABLA. Cambiar las cabeceras -->
+<!-- MOSTRAR LA TABLA -->
 <div class="tabla mt-5 mx-3 rounded-3 overflow-hidden">
 
     <table class="table table-striped table-bordered">
 
-        <!-- Títulos de la tabla, cambiarlos -->
         <thead class="table-dark">
             <tr>
                 <th scope="col" class="text-center">Identificación</th>
-                <th scope="col" class="text-center">primer_nombre</th>
-                <th scope="col" class="text-center">segundo_nombre</th>
-                <th scope="col" class="text-center">celular</th>
+                <th scope="col" class="text-center">Primer nombre</th>
+                <th scope="col" class="text-center">Segundo nombre</th>
+                <th scope="col" class="text-center">Primer apellido</th>
+                <th scope="col" class="text-center">Segundo apellido</th>
+                <th scope="col" class="text-center">Teléfono</th>
+                <th scope="col" class="text-center">Pago en efectivo</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
         </thead>
 
         <tbody>
 
-            <?php
-            // Iterar sobre los registros que llegaron
-            foreach ($resultadoCliente as $fila):
-            ?>
+            <?php foreach ($resultadoCliente as $fila): ?>
 
-            <!-- Fila que se generará -->
             <tr>
-                <!-- Cada una de las columnas, con su valor correspondiente -->
                 <td class="text-center"><?= $fila["identificacion"]; ?></td>
                 <td class="text-center"><?= $fila["primer_nombre"]; ?></td>
-                <td class="text-center"><?= $fila["celular"]; ?></td>
-                
-                <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
+                <td class="text-center"><?= $fila["segundo_nombre"]; ?></td>
+                <td class="text-center"><?= $fila["primer_apellido"]; ?></td>
+                <td class="text-center"><?= $fila["segundo_apellido"]; ?></td>
+                <td class="text-center"><?= $fila["telefono"]; ?></td>
+                <td class="text-center">
+                    <?= $fila["pago_efectivo"] ? "Sí" : "No"; ?>
+                </td>
+
+                <!-- Botón de eliminar. Incluye la PK identificacion -->
                 <td class="text-center">
                     <form action="cliente_delete.php" method="post">
-                        <input hidden type="text" name="cedulaEliminar" value="<?= $fila["identificacion"]; ?>">
+                        <input type="hidden" name="identificacionEliminar" value="<?= $fila["identificacion"]; ?>">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>
 
             </tr>
 
-            <?php
-            // Cerrar los estructuras de control
-            endforeach;
-            ?>
+            <?php endforeach; ?>
 
         </tbody>
 

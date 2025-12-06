@@ -1,23 +1,59 @@
 CREATE TABLE cliente(
-  cedula INT(10) PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL,
-  celular INT(10) NOT NULL
+  identificacion VARCHAR(10) PRIMARY KEY,
+  primer_nombre VARCHAR(50) NOT NULL,
+  segundo_nombre VARCHAR(50),
+  primer_apellido VARCHAR(50) NOT NULL,
+  segundo_apellido VARCHAR(50),
+  telefono VARCHAR(15) NOT NULL UNIQUE,
+  pago_efectivo BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE empresa(
-  nit INT(10) PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL,
-  presupuesto INT(10) NOT NULL,
-  cliente INT(10),
-  FOREIGN KEY(cliente) REFERENCES cliente(cedula)
+CREATE TABLE metodo_pago (
+  numero VARCHAR(30) PRIMARY KEY,
+  tipo VARCHAR(20) NOT NULL,
+  saldo NUMERIC(10,2) NOT NULL,
+
+  banco VARCHAR(50),
+  clave INT(4),
+
+  cvv CHAR(3),
+  fecha_vencimiento DATE,
+  titular VARCHAR(100),
+  activa BOOLEAN,
+  dueño INT(10) NOT NULL,
+
+  FOREIGN KEY (dueño) REFERENCES cliente(identificacion),
+  CONSTRAINT chk_saldo CHECK (saldo >= 0),
+  CONSTRAINT chk_tipo CHECK (tipo IN ('CUENTA', 'TARJETA')),
+  CONSTRAINT chk_tipo_campos CHECK (
+    ( tipo = 'CUENTA'
+      AND banco IS NOT NULL
+      AND clave IS NOT NULL
+      AND cvv IS NULL
+      AND fecha_vencimiento IS NULL
+      AND titular IS NULL
+      AND activa IS NULL
+    )
+    OR
+    ( tipo = 'TARJETA'
+      AND banco IS NULL
+      AND clave IS NULL
+      AND cvv IS NOT NULL
+      AND fecha_vencimiento IS NOT NULL
+      AND titular IS NOT NULL
+      AND activa IS NOT NULL
+    )
+  )
 );
 
-CREATE TABLE proyecto(
-  codigo INT(10) PRIMARY KEY,
-  fechacreacion DATE NOT NULL,
-  valor INT(10) NOT NULL,
-  cliente INT(10),
-  empresa INT(10),
-  FOREIGN KEY(cliente) REFERENCES cliente(cedula),
-  FOREIGN KEY(empresa) REFERENCES empresa(nit)
+CREATE TABLE actualizacion (
+  numero_cuenta_ahorros INT(15) NOT NULL,
+  fecha_cambio DATE NOT NULL,
+  siguiente_actualizacion DATE NOT NULL,
+  detalles VARCHAR(255) NOT NULL,
+  ejecutor VARCHAR(10) NOT NULL,
+
+  PRIMARY KEY (numero_cuenta_ahorros, fecha_cambio),
+  FOREIGN KEY (numero_cuenta_ahorros) REFERENCES metodo_pago(numero),
+  FOREIGN KEY (ejecutor) REFERENCES cliente(identificacion)
 );

@@ -3,25 +3,35 @@
 // Crear conexión con la BD
 require('../config/conexion.php');
 
-// Sacar los datos del formulario. Cada input se identifica con su "name"
-$codigo = $_POST["codigo"];
-$fechacreacion = $_POST["fechacreacion"];
-$valor = $_POST["valor"];
-$cliente = $_POST["cliente"];
-$empresa = $_POST["empresa"];
+// Sacar los datos del formulario
+$numero_cuenta_ahorros = $_POST["numero_cuenta_ahorros"];
+$fecha_cambio          = $_POST["fecha_cambio"];
+$siguiente_actualizacion = $_POST["siguiente_actualizacion"];
+$detalles              = $_POST["detalles"];
+$ejecutor              = $_POST["ejecutor"];
 
-// Query SQL a la BD. Si tienen que hacer comprobaciones, hacerlas acá (Generar una query diferente para casos especiales)
-$query = "INSERT INTO `actualizacion`(`codigo`,`fechacreacion`, `valor`, `cliente`, `empresa`) VALUES ('$codigo', '$fechacreacion', '$valor', '$cliente', '$empresa')";
+// Escapar strings (básico)
+$numero_cuenta_ahorros = mysqli_real_escape_string($conn, $numero_cuenta_ahorros);
+$fecha_cambio          = mysqli_real_escape_string($conn, $fecha_cambio);
+$siguiente_actualizacion = mysqli_real_escape_string($conn, $siguiente_actualizacion);
+$detalles              = mysqli_real_escape_string($conn, $detalles);
+
+// Query SQL a la BD
+$query = "
+    INSERT INTO actualizacion
+    (numero_cuenta_ahorros, fecha_cambio, siguiente_actualizacion, detalles, ejecutor)
+    VALUES
+    ('$numero_cuenta_ahorros', '$fecha_cambio', '$siguiente_actualizacion', '$detalles', '$ejecutor')
+";
 
 // Ejecutar consulta
 $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
 // Redirigir al usuario a la misma pagina
-if($result):
-    // Si fue exitosa, redirigirse de nuevo a la página de la entidad
+if ($result):
 	header("Location: actualizacion.php");
 else:
-	echo "Ha ocurrido un error al crear la persona";
+	echo "Ha ocurrido un error al crear la actualización";
 endif;
 
 mysqli_close($conn);
