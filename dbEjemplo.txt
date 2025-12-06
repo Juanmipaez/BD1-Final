@@ -47,7 +47,7 @@ CREATE TABLE metodo_pago (
 );
 
 CREATE TABLE actualizacion (
-  numero_cuenta_ahorros INT(15) NOT NULL,
+  numero_cuenta_ahorros VARCHAR(30) NOT NULL,
   fecha_cambio DATE NOT NULL,
   siguiente_actualizacion DATE NOT NULL,
   detalles VARCHAR(255) NOT NULL,
