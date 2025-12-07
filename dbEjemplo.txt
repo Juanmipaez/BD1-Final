@@ -38,3 +38,102 @@ CREATE TABLE actualizacion (
   FOREIGN KEY (numero_cuenta_ahorros) REFERENCES metodo_pago(numero),
   FOREIGN KEY (ejecutor) REFERENCES cliente(identificacion)
 );
+
+
+CREATE TABLE direccion(
+
+  tipo_via VARCHAR(10) NOT NULL CHECK (tipo_via IN ("carrera", "calle", "transversal", "circular", "diagonal", "avenida")),
+  nombre_via_prin VARCHAR(20) NOT NULL,
+  nombre_via_sec VARCHAR(20) NOT NULL,
+  numero_via_prin NUMERIC(4),
+  ciudad VARCHAR(20) NOT NULL,
+  letra_via_principal VARCHAR(1),
+  letra_via_secund VARCHAR(1),
+  tipo VARCHAR(10) NOT NULL CHECK (tipo IN ("casa", "edificio", "local", "oficina")),
+  referencia VARCHAR(50),
+
+  PRIMARY KEY (tipo_via, nombre_via_prin, nombre_via_sec, ciudad) 
+
+);
+
+CREATE TABLE ubicacion(
+
+  principal BOOLEAN NOT NULL DEFAULT FALSE,
+  cliente NUMERIC(10) NOT NULL,
+  tipo_via VARCHAR(10) NOT NULL,
+  via_prin VARCHAR(20) NOT NULL,
+  via_sec VARCHAR(20) NOT NULL,
+  ciudad VARCHAR(20) NOT NULL,
+
+  PRIMARY KEY (cliente, tipo_via, via_prin, Via_sec, ciudad)
+  FOREIGN KEY cliente REFERENCES cliente(identificacion)
+  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES direccion (tipo_via, nombre_via_prin, nombre_via_sec, ciudad),
+
+);
+
+CREATE TABLE restaurante (
+
+  id NUMERIC(10) PRIMARY KEY,
+  nombre VARCHAR(20) NOT NULL,
+  hora_apertura TIME(0) NOT NULL,
+  hora_cierre TIME(0) NOT NULL,
+  tipo_via VARCHAR(10) NOT NULL,
+  via_prin VARCHAR(20) NOT NULL,
+  via_sec VARCHAR(20) NOT NULL,
+  ciudad VARCHAR(20) NOT NULL,
+
+  UNIQUE (tipo_via, via_prin, via_sec, ciudad)
+  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES (direccion(tipo_via, nombre_via_prin, nombre_via_sec, ciudad))
+
+);
+
+CREATE TABLE producto (
+
+  nombre VARCHAR(20) NOT NULL,
+  precio_unidad NUMERIC(10) NOT NULL CHECK (precio_unidad>=0),
+  disponible BOOLEAN NOT NULL DEFAULT FALSE,
+  elemento_de VARCHAR(20),
+  restarurante_de_la_composicion NUMERIC(10),
+  restaurante NUMERIC(10) NOT NULL,
+
+  PRIMARY KEY (nombre, restaurante),
+  FOREIGN KEY (producto, restarurante_de_la_composicion) REFERENCES (producto(nombre, restaurante))
+
+);
+
+CREATE TABLE pedido (
+
+  codigo NUMERIC(10) PRIMARY KEY CHECK (codigo>=0),
+  fecha_creacion DATE NOT NULL,
+  total_estimado NUMERIC (10) NOT NULL,
+  hora_estimada TIME(0) NOT NULL,
+  tipo_domicilio VARCHAR(1) NOT NULL CHECK (tipo_domicilio IN ("l", "d")),
+  contraseña NUMERIC(4) CHECK(contraseña>=0),
+  metodo_pago NUMERIC(30),
+  restaurante NUMERIC(10) NOT NULL,
+  cliente_d NUMERIC(10), 
+  tipo_via VARCHAR(10), 
+  via_prin VARCHAR(20), 
+  via_sec VARCHAR(20),
+  ciudad VARCHAR(20),
+  cliente_l NUMERIC(10),
+  
+  FOREIGN KEY metodo_pago REFERENCES metodo_pago(numero),
+  FOREIGN KEY restaurante REFERENCES restaurante(id),
+  FOREIGN KEY (cliente_d, tipo_via, via_prin, via_sec, ciudad) REFERENCES ubicacion (cliente, tipo_via, via_prin, Via_sec, ciudad)
+  FOREIGN KEY cliente_l REFERENCES cliente(identificacion)
+
+);
+
+CREATE TABLE linea_de_pedido (
+
+  cantidad_de_producto NUMERIC(3) NOT NULL CHECK (cantidad_de_producto>=0),
+  producto VARCHAR(20) NOT NULL,
+  restarurante_producto NUMERIC(10) NOT NULL,
+  pedido NUMERIC(10) NOT NULL,
+
+  PRIMARY KEY (producto, restarurante_producto, pedido),
+  FOREIGN KEY (producto, restarurante_producto) REFERENCES producto(nombre, restaurante),
+  FOREIGN KEY pedido REFERENCES pedido(codigo)
+
+),
