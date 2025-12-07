@@ -1,58 +1,39 @@
 CREATE TABLE cliente(
-  identificacion BIGINT UNSIGNED PRIMARY KEY,
+  identificacion NUMERIC(10) PRIMARY KEY CHECK(identificacion>=0),
   primer_nombre VARCHAR(50) NOT NULL,
   segundo_nombre VARCHAR(50),
   primer_apellido VARCHAR(50) NOT NULL,
   segundo_apellido VARCHAR(50),
-  telefono VARCHAR(15) NOT NULL UNIQUE,
+  telefono NUMERIC(15) NOT NULL UNIQUE CHECK(telefono>=0),
   pago_efectivo BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE metodo_pago (
-  numero VARCHAR(30) PRIMARY KEY,
-  tipo VARCHAR(20) NOT NULL,
-  saldo NUMERIC(10,2) NOT NULL,
-
+  numero NUMERIC(30) PRIMARY KEY CHECK(numero >= 0),
+  correo VARCHAR(20) NOT NULL,
+  saldo NUMERIC(10,2) NOT NULL CHECK(saldo >= 0),
+  tipo VARCHAR(20) NOT NULL IN ("tarjeta", "cuenta"),
+  
   banco VARCHAR(50),
-  clave INT(4),
+  clave INT(4) CHECK (clave>=0),
 
-  cvv CHAR(3),
+  cvv INT(3) CHECK (cvv >= 0) ,
   fecha_vencimiento DATE,
-  titular VARCHAR(100),
+  titular VARCHAR(40),
   activa BOOLEAN,
-  dueño BIGINT UNSIGNED NOT NULL,
+  dueño NUMERIC(10) NOT NULL,
 
   FOREIGN KEY (dueño) REFERENCES cliente(identificacion),
-  CONSTRAINT chk_saldo CHECK (saldo >= 0),
-  CONSTRAINT chk_tipo CHECK (tipo IN ('CUENTA', 'TARJETA')),
-  CONSTRAINT chk_tipo_campos CHECK (
-    ( tipo = 'CUENTA'
-      AND banco IS NOT NULL
-      AND clave IS NOT NULL
-      AND cvv IS NULL
-      AND fecha_vencimiento IS NULL
-      AND titular IS NULL
-      AND activa IS NULL
-    )
-    OR
-    ( tipo = 'TARJETA'
-      AND banco IS NULL
-      AND clave IS NULL
-      AND cvv IS NOT NULL
-      AND fecha_vencimiento IS NOT NULL
-      AND titular IS NOT NULL
-      AND activa IS NOT NULL
-    )
-  )
+  
 );
 
 CREATE TABLE actualizacion (
-  numero_cuenta_ahorros VARCHAR(30) NOT NULL,
+  
   fecha_cambio DATE NOT NULL,
   siguiente_actualizacion DATE NOT NULL,
   detalles VARCHAR(255) NOT NULL,
-  ejecutor BIGINT UNSIGNED NOT NULL,
-
+  ejecutor NUMERIC(10) NOT NULL,
+  numero_cuenta_ahorros VARCHAR(30) NOT NULL,
   PRIMARY KEY (numero_cuenta_ahorros, fecha_cambio),
   FOREIGN KEY (numero_cuenta_ahorros) REFERENCES metodo_pago(numero),
   FOREIGN KEY (ejecutor) REFERENCES cliente(identificacion)
