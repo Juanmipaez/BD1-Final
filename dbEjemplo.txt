@@ -1,3 +1,4 @@
+DROP TABLE CLIENTE;
 CREATE TABLE cliente(
   identificacion NUMERIC(10) PRIMARY KEY CHECK(identificacion>=0),
   primer_nombre VARCHAR(50) NOT NULL,
@@ -12,7 +13,7 @@ CREATE TABLE metodo_pago (
   numero NUMERIC(30) PRIMARY KEY CHECK(numero >= 0),
   correo VARCHAR(20) NOT NULL,
   saldo NUMERIC(10,2) NOT NULL CHECK(saldo >= 0),
-  tipo VARCHAR(20) NOT NULL IN ("tarjeta", "cuenta"),
+  tipo VARCHAR(20) NOT NULL CHECK (tipo IN ("tarjeta", "cuenta")),
   
   banco VARCHAR(50),
   clave INT(4) CHECK (clave>=0),
@@ -23,7 +24,7 @@ CREATE TABLE metodo_pago (
   activa BOOLEAN,
   dueño NUMERIC(10) NOT NULL,
 
-  FOREIGN KEY (dueño) REFERENCES cliente(identificacion),
+  FOREIGN KEY (dueño) REFERENCES cliente(identificacion)
   
 );
 
@@ -65,9 +66,9 @@ CREATE TABLE ubicacion(
   via_sec VARCHAR(20) NOT NULL,
   ciudad VARCHAR(20) NOT NULL,
 
-  PRIMARY KEY (cliente, tipo_via, via_prin, Via_sec, ciudad)
-  FOREIGN KEY cliente REFERENCES cliente(identificacion)
-  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES direccion (tipo_via, nombre_via_prin, nombre_via_sec, ciudad),
+  PRIMARY KEY (cliente, tipo_via, via_prin, via_sec, ciudad),
+  FOREIGN KEY (cliente) REFERENCES cliente(identificacion),
+  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES direccion (tipo_via, nombre_via_prin, nombre_via_sec, ciudad)
 
 );
 
@@ -82,8 +83,8 @@ CREATE TABLE restaurante (
   via_sec VARCHAR(20) NOT NULL,
   ciudad VARCHAR(20) NOT NULL,
 
-  UNIQUE (tipo_via, via_prin, via_sec, ciudad)
-  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES (direccion(tipo_via, nombre_via_prin, nombre_via_sec, ciudad))
+  UNIQUE (tipo_via, via_prin, via_sec, ciudad),
+  FOREIGN KEY (tipo_via, via_prin, via_sec, ciudad) REFERENCES direccion(tipo_via, nombre_via_prin, nombre_via_sec, ciudad)
 
 );
 
@@ -93,11 +94,11 @@ CREATE TABLE producto (
   precio_unidad NUMERIC(10) NOT NULL CHECK (precio_unidad>=0),
   disponible BOOLEAN NOT NULL DEFAULT FALSE,
   elemento_de VARCHAR(20),
-  restarurante_de_la_composicion NUMERIC(10),
+  restaurante_de_la_composicion NUMERIC(10),
   restaurante NUMERIC(10) NOT NULL,
 
   PRIMARY KEY (nombre, restaurante),
-  FOREIGN KEY (producto, restarurante_de_la_composicion) REFERENCES (producto(nombre, restaurante))
+  FOREIGN KEY (elemento_de, restaurante_de_la_composicion) REFERENCES producto(nombre, restaurante)
 
 );
 
@@ -118,10 +119,10 @@ CREATE TABLE pedido (
   ciudad VARCHAR(20),
   cliente_l NUMERIC(10),
   
-  FOREIGN KEY metodo_pago REFERENCES metodo_pago(numero),
-  FOREIGN KEY restaurante REFERENCES restaurante(id),
-  FOREIGN KEY (cliente_d, tipo_via, via_prin, via_sec, ciudad) REFERENCES ubicacion (cliente, tipo_via, via_prin, Via_sec, ciudad)
-  FOREIGN KEY cliente_l REFERENCES cliente(identificacion)
+  FOREIGN KEY (metodo_pago) REFERENCES metodo_pago(numero),
+  FOREIGN KEY (restaurante) REFERENCES restaurante(id),
+  FOREIGN KEY (cliente_d, tipo_via, via_prin, via_sec, ciudad) REFERENCES ubicacion (cliente, tipo_via, via_prin, via_sec, ciudad),
+  FOREIGN KEY (cliente_l) REFERENCES cliente(identificacion)
 
 );
 
@@ -134,6 +135,6 @@ CREATE TABLE linea_de_pedido (
 
   PRIMARY KEY (producto, restarurante_producto, pedido),
   FOREIGN KEY (producto, restarurante_producto) REFERENCES producto(nombre, restaurante),
-  FOREIGN KEY pedido REFERENCES pedido(codigo)
+  FOREIGN KEY (pedido) REFERENCES pedido(codigo)
 
-),
+);
