@@ -6,7 +6,7 @@ CREATE TABLE cliente(
   primer_apellido VARCHAR(50) NOT NULL,
   segundo_apellido VARCHAR(50),
   telefono NUMERIC(15) NOT NULL UNIQUE CHECK(telefono>=0),
-  pago_efectivo BOOLEAN NOT NULL
+  pago_efectivo NUMERIC(1) NOT NULL CHECK(pago_efectivo IN (0,1))
 );
 
 CREATE TABLE metodo_pago (
@@ -21,7 +21,7 @@ CREATE TABLE metodo_pago (
   cvv NUMERIC(3) CHECK (cvv >= 0) ,
   fecha_vencimiento DATE,
   titular VARCHAR(40),
-  activa BOOLEAN,
+  activa NUMERIC(1) CHECK (activa IN (0,1)),
   dueño NUMERIC(10) NOT NULL,
 
   FOREIGN KEY (dueño) REFERENCES cliente(identificacion)
@@ -59,7 +59,7 @@ CREATE TABLE direccion(
 
 CREATE TABLE ubicacion(
 
-  principal BOOLEAN NOT NULL,
+  principal NUMERIC(1) NOT NULL CHECK (principal IN (0,1)),
   cliente NUMERIC(10) NOT NULL,
   tipo_via VARCHAR(10) NOT NULL,
   via_prin VARCHAR(20) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE producto (
 
   nombre VARCHAR(20) NOT NULL,
   precio_unidad NUMERIC(10) NOT NULL CHECK (precio_unidad>=0),
-  disponible BOOLEAN NOT NULL,
+  disponible NUMERIC(1) NOT NULL CHECK (disponible IN (0,1)),
   elemento_de VARCHAR(20),
   restaurante_de_la_composicion NUMERIC(10),
   restaurante NUMERIC(10) NOT NULL,
@@ -130,11 +130,11 @@ CREATE TABLE linea_de_pedido (
 
   cantidad_de_producto NUMERIC(3) NOT NULL CHECK (cantidad_de_producto>=0),
   producto VARCHAR(20) NOT NULL,
-  restarurante_producto NUMERIC(10) NOT NULL,
+  restaurante_producto NUMERIC(10) NOT NULL,
   pedido NUMERIC(10) NOT NULL,
 
-  PRIMARY KEY (producto, restarurante_producto, pedido),
-  FOREIGN KEY (producto, restarurante_producto) REFERENCES producto(nombre, restaurante),
+  PRIMARY KEY (producto, restaurante_producto, pedido),
+  FOREIGN KEY (producto, restaurante_producto) REFERENCES producto(nombre, restaurante),
   FOREIGN KEY (pedido) REFERENCES pedido(codigo)
 
 );
