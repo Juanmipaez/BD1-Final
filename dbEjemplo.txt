@@ -1,4 +1,4 @@
-DROP TABLE CLIENTE;
+
 CREATE TABLE cliente(
   identificacion NUMERIC(10) PRIMARY KEY CHECK(identificacion>=0),
   primer_nombre VARCHAR(50) NOT NULL,
@@ -6,19 +6,19 @@ CREATE TABLE cliente(
   primer_apellido VARCHAR(50) NOT NULL,
   segundo_apellido VARCHAR(50),
   telefono NUMERIC(15) NOT NULL UNIQUE CHECK(telefono>=0),
-  pago_efectivo BOOLEAN NOT NULL DEFAULT FALSE
+  pago_efectivo BOOLEAN NOT NULL
 );
 
 CREATE TABLE metodo_pago (
   numero NUMERIC(30) PRIMARY KEY CHECK(numero >= 0),
   correo VARCHAR(20) NOT NULL,
   saldo NUMERIC(10,2) NOT NULL CHECK(saldo >= 0),
-  tipo VARCHAR(20) NOT NULL CHECK (tipo IN ("tarjeta", "cuenta")),
+  tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('tarjeta', 'cuenta')),
   
   banco VARCHAR(50),
-  clave INT(4) CHECK (clave>=0),
+  clave NUMERIC(4) CHECK (clave>=0),
 
-  cvv INT(3) CHECK (cvv >= 0) ,
+  cvv NUMERIC(3) CHECK (cvv >= 0) ,
   fecha_vencimiento DATE,
   titular VARCHAR(40),
   activa BOOLEAN,
@@ -34,7 +34,7 @@ CREATE TABLE actualizacion (
   siguiente_actualizacion DATE NOT NULL,
   detalles VARCHAR(255) NOT NULL,
   ejecutor NUMERIC(10) NOT NULL,
-  numero_cuenta_ahorros VARCHAR(30) NOT NULL,
+  numero_cuenta_ahorros NUMERIC(30) NOT NULL,
   PRIMARY KEY (numero_cuenta_ahorros, fecha_cambio),
   FOREIGN KEY (numero_cuenta_ahorros) REFERENCES metodo_pago(numero),
   FOREIGN KEY (ejecutor) REFERENCES cliente(identificacion)
@@ -43,14 +43,14 @@ CREATE TABLE actualizacion (
 
 CREATE TABLE direccion(
 
-  tipo_via VARCHAR(10) NOT NULL CHECK (tipo_via IN ("carrera", "calle", "transversal", "circular", "diagonal", "avenida")),
+  tipo_via VARCHAR(10) NOT NULL CHECK (tipo_via IN ('carrera', 'calle', 'transversal', 'circular', 'diagonal', 'avenida')),
   nombre_via_prin VARCHAR(20) NOT NULL,
   nombre_via_sec VARCHAR(20) NOT NULL,
   numero_via_prin NUMERIC(4),
   ciudad VARCHAR(20) NOT NULL,
   letra_via_principal VARCHAR(1),
   letra_via_secund VARCHAR(1),
-  tipo VARCHAR(10) NOT NULL CHECK (tipo IN ("casa", "edificio", "local", "oficina")),
+  tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('casa', 'edificio', 'local', 'oficina')),
   referencia VARCHAR(50),
 
   PRIMARY KEY (tipo_via, nombre_via_prin, nombre_via_sec, ciudad) 
@@ -59,7 +59,7 @@ CREATE TABLE direccion(
 
 CREATE TABLE ubicacion(
 
-  principal BOOLEAN NOT NULL DEFAULT FALSE,
+  principal BOOLEAN NOT NULL,
   cliente NUMERIC(10) NOT NULL,
   tipo_via VARCHAR(10) NOT NULL,
   via_prin VARCHAR(20) NOT NULL,
@@ -76,8 +76,8 @@ CREATE TABLE restaurante (
 
   id NUMERIC(10) PRIMARY KEY,
   nombre VARCHAR(20) NOT NULL,
-  hora_apertura TIME(0) NOT NULL,
-  hora_cierre TIME(0) NOT NULL,
+  hora_apertura TIME NOT NULL,
+  hora_cierre TIME NOT NULL,
   tipo_via VARCHAR(10) NOT NULL,
   via_prin VARCHAR(20) NOT NULL,
   via_sec VARCHAR(20) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE producto (
 
   nombre VARCHAR(20) NOT NULL,
   precio_unidad NUMERIC(10) NOT NULL CHECK (precio_unidad>=0),
-  disponible BOOLEAN NOT NULL DEFAULT FALSE,
+  disponible BOOLEAN NOT NULL,
   elemento_de VARCHAR(20),
   restaurante_de_la_composicion NUMERIC(10),
   restaurante NUMERIC(10) NOT NULL,
@@ -107,8 +107,8 @@ CREATE TABLE pedido (
   codigo NUMERIC(10) PRIMARY KEY CHECK (codigo>=0),
   fecha_creacion DATE NOT NULL,
   total_estimado NUMERIC (10) NOT NULL,
-  hora_estimada TIME(0) NOT NULL,
-  tipo_domicilio VARCHAR(1) NOT NULL CHECK (tipo_domicilio IN ("l", "d")),
+  hora_estimada TIME NOT NULL,
+  tipo_domicilio VARCHAR(1) NOT NULL CHECK (tipo_domicilio IN ('l', 'd')),
   contraseña NUMERIC(4) CHECK(contraseña>=0),
   metodo_pago NUMERIC(30),
   restaurante NUMERIC(10) NOT NULL,
