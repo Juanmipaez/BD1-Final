@@ -83,6 +83,14 @@ if ($tipo_metodo === 'cuenta') {
         $errores[] = "Para una tarjeta, la fecha de vencimiento es obligatoria";
     }
     
+    if (!empty($fecha_vencimiento)) {
+        $fecha_obj = DateTime::createFromFormat('Y-m-d', $fecha_vencimiento);
+        $hoy = new DateTime('today'); // fecha de hoy a medianoche
+        if (!$fecha_obj || $fecha_obj <= $hoy) {
+            $errores[] = "La fecha de vencimiento debe ser posterior a la fecha actual.";
+        }
+    }
+    
     if (empty($titular)) {
         $errores[] = "Para una tarjeta, el titular es obligatorio";
     }

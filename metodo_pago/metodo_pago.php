@@ -171,6 +171,8 @@ include "../includes/header.php";
                                    class="form-control" 
                                    id="fecha_vencimiento" 
                                    name="fecha_vencimiento">
+                            <div class="invalid-feedback" id="fechaVencimientoFeedback">
+                            Por favor ingrese una fecha de vencimiento mayor a la fecha actual. </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="titular" class="form-label fw-semibold">
@@ -324,6 +326,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const cvv = document.getElementById('cvv');
     const fechaVencimiento = document.getElementById('fecha_vencimiento');
     const titular = document.getElementById('titular');
+
+    // --- Establecer mínimo (mañana) para fecha de vencimiento ---
+    function setFechaMinima() {
+        const hoy = new Date();
+        // Queremos fechas estrictamente mayores a hoy: usar mañana
+        hoy.setDate(hoy.getDate() + 1);
+        const yyyy = hoy.getFullYear();
+        const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+        const dd = String(hoy.getDate()).padStart(2, '0');
+        fechaVencimiento.min = `${yyyy}-${mm}-${dd}`;
+    }
+    setFechaMinima();
+    
+    // Limpiar customValidity cuando el usuario corrija la fecha
+    fechaVencimiento.addEventListener('input', function () {
+        // Si el valor actual es estrictamente mayor a hoy, quitar error
+        const hoyStr = new Date().toISOString().split('T')[0];
+        if (this.value && this.value > hoyStr) {
+            this.setCustomValidity('');
+        }
+    });
     
     function actualizarCampos() {
         const tipo = tipoMetodo.value;
@@ -384,11 +407,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validación de formulario Bootstrap
     const form = document.getElementById('formMetodoPago');
     form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
+    // Validación adicional para fecha de vencimiento (si está requerida)
+    if (fechaVencimiento.required) {
+        const valor = fechaVencimiento.value;
+        const hoyStr = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+        if (!valor || valor <= hoyStr) {
+            // fecha inválida: no puede ser hoy ni anterior
+            fechaVencimiento.setCustomValidity('Fecha inválida');
+        } else {
+            fechaVencimiento.setCustomValidity('');
         }
-        form.classList.add('was-validated');
+    } else {
+        fechaVencimiento.setCustomValidity('');
+    }
+
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+        // Opcional: si quieres forzar mostrar el mensaje personalizado
+        // fechaVencimiento.reportValidity();
+    }
+    form.classList.add('was-validated');
     }, false);
     
     // Reset form
@@ -396,6 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             camposCuenta.style.display = 'none';
             camposTarjeta.style.display = 'none';
+            fechaVencimiento.setCustomValidity('');
             form.classList.remove('was-validated');
         }, 10);
     });
