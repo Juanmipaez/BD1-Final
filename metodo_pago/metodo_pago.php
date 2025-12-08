@@ -61,7 +61,7 @@ include "../includes/header.php";
                                class="form-control" 
                                id="correo" 
                                name="correo" 
-                               maxlength="20"
+                               maxlength="100"
                                placeholder="Ej: user@example.com"
                                required>
                         <div class="invalid-feedback">

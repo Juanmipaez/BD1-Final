@@ -26,7 +26,7 @@ if (empty($correo) || !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     $errores[] = "Debe proporcionar un correo electrónico válido";
 }
 
-if (strlen($correo) > 20) {
+if (strlen($correo) > 100) {
     $errores[] = "El correo no puede exceder 20 caracteres";
 }
 

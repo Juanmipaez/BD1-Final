@@ -11,7 +11,7 @@ CREATE TABLE cliente(
 
 CREATE TABLE metodo_pago (
   numero NUMERIC(30) PRIMARY KEY CHECK(numero >= 0),
-  correo VARCHAR(20) NOT NULL,
+  correo VARCHAR(100) NOT NULL,
   saldo NUMERIC(10,2) NOT NULL CHECK(saldo >= 0),
   tipo VARCHAR(20) NOT NULL CHECK (tipo IN ('tarjeta', 'cuenta')),
   
